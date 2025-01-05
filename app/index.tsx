@@ -1,4 +1,4 @@
-import { TagSystem } from "@/components/Buttons";
+import { BigBtn, TagSystem } from "@/components/Buttons";
 import { CustomDropdown } from "@/components/CustomDropdown";
 import { Div } from "@/components/Div";
 import Header from "@/components/Header";
@@ -13,7 +13,7 @@ import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { Button, ScrollView, Text, View } from "react-native";
 
 export default function Index() {
   useRemoveNavHeader()
@@ -57,7 +57,7 @@ export default function Index() {
             handleTagSelection={(category) => handleCategorySelection(category)} 
             customStyles="inline-block mt-8 ml-5" />
 
-        <CustomDropdown name={'sort_dropdown'} options={Object.values(ProductSortMethods)} selected={sortingMethod} handleSelect={(name, selected) => setSortingMethod(selected)} />
+        <CustomDropdown margins={20} name={'sort_dropdown'} options={Object.values(ProductSortMethods)} selected={sortingMethod} handleSelect={(name, selected) => setSortingMethod(selected)} />
 
         <View className="flex flex-row justify-center">
           <View className="flex flex-col mb-8">
@@ -77,26 +77,6 @@ export default function Index() {
             }
           </View>
         </View>
-         
-        {/* {categorisedProducts[0]?.products.map((prod, id) => (
-          <Text className="font-jo-li" key={id}>{prod.name}</Text>
-        ))}
-        <Text className="color-red-500">miau</Text>
-
-        {categorisedProducts[0]?.products.map((prod, id) => (
-          <Text className="font-jo-li" key={id}>{prod.name}</Text>
-        ))}
-        <Text className="color-red-500">miau</Text>
-
-        {categorisedProducts[0]?.products.map((prod, id) => (
-          <Text className="font-jo-li" key={id}>{prod.name}</Text>
-        ))}
-        <Text className="color-red-500">miau</Text>
-
-        {categorisedProducts[0]?.products.map((prod, id) => (
-          <Text className="font-jo-li" key={id}>{prod.name}</Text>
-        ))}
-        <Text className="color-red-500">miau</Text> */}
     </ScrollView>
   );
 }

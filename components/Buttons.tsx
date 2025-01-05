@@ -19,7 +19,7 @@ export const SmallBtn = (
 ) => {
     return (
         <Pressable onPress={() => handleClick && handleClick()} className={`${active ? (whiteBtn ? 'bg-white border-2 border-black' : 'bg-black') : 'bg-light-gray' } ${customStyles} rounded-full px-10 h-11 hover:scale-110 flex justify-center items-center`}>
-            <Text className={`${active ? (whiteBtn ? ' text-black' : 'text-white') : 'text-dark-gray'}`} >{children}</Text>
+            <Text className={`font-jo-md ${active ? (whiteBtn ? ' text-black' : 'text-white') : 'text-dark-gray'}`} >{children}</Text>
         </Pressable>
     );
 }

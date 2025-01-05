@@ -4,6 +4,7 @@ import "../global.css";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import { ProfileBoxProvider } from "@/context/ProfileBoxContext";
+import { ShopContextProvider } from "@/context/ShopContext";
 
 export default function RootLayout() {
 
@@ -24,8 +25,10 @@ export default function RootLayout() {
   }
 
   return (
-    <ProfileBoxProvider>
-      <Stack />
-    </ProfileBoxProvider>
+    <ShopContextProvider>
+      <ProfileBoxProvider>
+        <Stack />
+      </ProfileBoxProvider>
+    </ShopContextProvider>
   )
 }

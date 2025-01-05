@@ -17,6 +17,8 @@ export async function login(email: string, password: string) : Promise<Response>
 }
 
 export async function resetPassword(id: number, password: string) : Promise<void> {
+    console.log(id, password);
+
     const response = await fetch(process.env.EXPO_PUBLIC_API_URL + '/users/reset-password', {
         method: 'POST',
         headers: {
