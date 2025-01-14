@@ -8,7 +8,10 @@ export default function useGetUser() {
         email: '', 
         firstName: '', 
         lastName: '',
+        profileImageUrl: '',
         phoneNumber: '', 
+        gender: '',
+        age: '0',
         password: '',
         defaultDeliveryAddress: {
             id: -1,
@@ -52,8 +55,11 @@ export default function useGetUser() {
             email: '', 
             firstName: '', 
             lastName: '',
+            profileImageUrl: '',
             phoneNumber: '', 
             password: '',
+            gender: '',
+            age: '0',
             defaultDeliveryAddress: {
                 id: -1,
                 streetLine: '',

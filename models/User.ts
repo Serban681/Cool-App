@@ -4,8 +4,11 @@ export interface SimpleUser {
     id?: number,
     firstName: string,
     lastName: string,
+    profileImageUrl?: string | null,
     email: string,
     phoneNumber: string,
+    gender: string,
+    age: string,
     password: string,
     defaultDeliveryAddressId?: number,
     defaultBillingAddressId?: number

@@ -8,9 +8,11 @@ import useRemoveNavHeader from "@/hooks/useRemoveNavHeader";
 import { resetPassword, updateUser } from "@/lib/userRequests";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Button, Image, ScrollView, Text, View } from "react-native";
+import { Button, Image, Pressable, ScrollView, Text, View } from "react-native";
 
 import * as Location from 'expo-location';
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { RadioButton } from "react-native-paper";
 
 export default function Page() {
     useRemoveNavHeader();
@@ -23,6 +25,8 @@ export default function Page() {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('0');
     const [newPassword, setNewPassword] = useState('');
 
     const [deliveryAddressStreetLine, setDeliveryAddressStreetLine] = useState('');
@@ -43,6 +47,8 @@ export default function Page() {
             setLastName(user.lastName);
             setEmail(user.email);
             setPhoneNumber(user.phoneNumber);
+            setGender(user.gender);
+            setAge(user.age.toString());
 
             setDeliveryAddressStreetLine(user.defaultDeliveryAddress.streetLine);
             setDeliveryAddressPostalCode(user.defaultDeliveryAddress.postalCode.toString());
@@ -72,8 +78,11 @@ export default function Page() {
             id: user.id!,
             firstName: firstName,
             lastName: lastName,
+            profileImageUrl: user.profileImageUrl,
             email: email,
             phoneNumber: phoneNumber,
+            gender: gender,
+            age: age,
             password: user.password,
             defaultDeliveryAddress: { 
                 streetLine: deliveryAddressStreetLine,
@@ -90,12 +99,8 @@ export default function Page() {
                 country: billingAddressCountry    
             }
         }).then(res => setUser(res))
-            .then(() => router.replace('/'))
-            
-        
-        // .then(() => setNotifierState({ isError: false, message: 'Profile updated successfully' }))
-            // .catch(err => setNotifierState({ isError: true, message: 'Profile update failed' }));
-    }
+            .then(() => router.replace('/'))   
+        }
 
     async function getCurrentLocation() {
         let { status } = await Location.requestForegroundPermissionsAsync();
@@ -128,9 +133,28 @@ export default function Page() {
         <ScrollView>
             <Header />
             <ProfileBox />
-            <View className="mx-5 mt-5">
+            <View className="mx-5 mt-5 relative">
                 <SectionTitle>Profile</SectionTitle>
-
+                <Pressable className="absolute right-0" onPress={() => router.replace('/camera')}>
+                    { !!!user.profileImageUrl ? (
+                        <View className="rounded-full  w-20 h-20 bg-pink flex flex-col items-center">
+                            <AntDesign name="camerao" color="white" size={25} className="mt-1" />
+                            <Text className="text-center text-white font-jo-li flex-1 w-20">Change Image</Text>
+                        </View>
+                     ) : (
+                        <View className="relative">
+                            <Image
+                                source={{ uri: user.profileImageUrl! }}
+                                className="w-20 h-20 rounded-full"
+                                alt="profile image"
+                            />
+                            <View className="absolute w-full h-full flex flex-col items-center justify-center rounded-full">
+                                <AntDesign name="camerao" color="white" size={25} />
+                            </View>
+                        </View>
+                    )}
+                </Pressable>
+                
                 <View className="flex flex-col xl:flex-row justify-between w-full">
                     <View>
                         <Text className="font-jo-md text-xl mt-5">Personal Details</Text>
@@ -140,6 +164,38 @@ export default function Page() {
                             <CustomTextInput value={email} setValue={setEmail} label="Email" />
                             <CustomTextInput value={phoneNumber} setValue={setPhoneNumber} label="Phone Number" />
                             
+                            <Text className="font-jo-md text-xl">Gender:</Text>
+                            <View className="flex flex-row -ml-2">
+                                <View className="flex flex-row items-center">
+                                    <RadioButton 
+                                        value="NOT_MENTIONED"
+                                        status={ gender === 'NOT_MENTIONED' ? 'checked' : 'unchecked' }
+                                        onPress={() => setGender('NOT_MENTIONED')}
+                                    />
+                                    <Text className="text-black font-jo-li">Prefer Not To Say</Text>
+                                </View>
+
+                                <View className="flex flex-row items-center">
+                                    <RadioButton 
+                                        value="MALE"
+                                        status={ gender === 'MALE' ? 'checked' : 'unchecked' }
+                                        onPress={() => setGender('MALE')}
+                                    />
+                                    <Text className="text-black font-jo-li">Male</Text>
+                                </View>
+
+                                <View className="flex flex-row items-center">
+                                    <RadioButton
+                                        value="FEMALE"
+                                        status={ gender === 'FEMALE' ? 'checked' : 'unchecked' }
+                                        onPress={() => setGender('FEMALE')}
+                                    />
+                                    <Text className="text-black font-jo-li">Female</Text>
+                                </View>        
+                            </View>
+
+                            <CustomTextInput label="Age" value={age} setValue={setAge} />
+
                             <Text className="font-jo-md text-xl mt-7">Change Password</Text>
                             <CustomTextInput value={newPassword} setValue={setNewPassword} label="New Password" />
 

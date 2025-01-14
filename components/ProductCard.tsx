@@ -24,8 +24,7 @@ export default function ProductCard({ product, customStyles }: { product: Produc
                 <Text className="font-jo-li text-sm">Price: {product.price.toFixed(2)}$</Text>
             </View>
             <View className="flex flex-row justify-center mt-6">
-                <BigBtn handleClick={() => router.replace('/camera')}> 
-                    {/* //(`/product/${product.id!}`)}> */}
+                <BigBtn handleClick={() => router.replace(`/product/${product.id!}`)}> 
                     More
                 </BigBtn>
             </View>

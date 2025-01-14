@@ -54,7 +54,7 @@ export default function Header() {
                         </View>
                     }
                     {user.id !== - 1 ? 
-                        <MyAvatar handleClick={() => setIsProfileBoxOpen(true)} customStyles='mt-1' />
+                        <MyAvatar user={user} handleClick={() => setIsProfileBoxOpen(true)} customStyles='mt-1' />
                         :
                         <BigBtn handleClick={() => router.replace('/login')} customStyles="inline-block">Sign In</BigBtn>
                     }

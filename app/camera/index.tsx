@@ -1,18 +1,24 @@
 import useRemoveNavHeader from '@/hooks/useRemoveNavHeader';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraCapturedPicture, CameraView, useCameraPermissions } from 'expo-camera';
 import { useRef, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import useGetUser from '@/hooks/useGetUser';
+import { updateUser } from '@/lib/userRequests';
+import { useRouter } from 'expo-router';
 
 export default function App() {
     useRemoveNavHeader();
+
+    const router = useRouter();
+    const { user, setUser } = useGetUser();
 
     const [permission, requestPermission] = useCameraPermissions();
     const cameraRef = useRef<CameraView>(null);
 
     const [photoTaken, setPhotoTaken] = useState(false);
-    const [photoUri, setPhotoUri] = useState<string>('');
+    const [photo, setPhoto] = useState<CameraCapturedPicture | null>(null);
 
     if (!permission) {
         return <View />;
@@ -23,9 +29,27 @@ export default function App() {
     }
 
     const takePhoto = async () => {
-        await cameraRef.current?.takePictureAsync({ quality: 0.2 }).then((photo) => setPhotoUri(photo!.uri));
+        await cameraRef.current?.takePictureAsync({ quality: 0.2, base64: true }).then((_photo) => setPhoto(_photo!));
 
         setPhotoTaken(true);
+    }
+
+    const uploadPhoto = async () => {
+        const form = new FormData()
+        form.append('image', photo?.base64?.toString()!);
+
+        fetch('https://api.imgbb.com/1/upload?key=beaccd33cd2927f45cb243dc430dc60e', {
+            method: 'POST',
+            body: form
+        })
+        .then(response => response.json())
+        .then(image => {
+            updateUser({ ...user, profileImageUrl: image.data.display_url }).then(res => {
+                setUser(res);
+                router.replace('/profile');
+            })
+        })
+        .catch((error) => console.log(error));
     }
 
     if(!photoTaken) {
@@ -33,7 +57,7 @@ export default function App() {
             <View style={styles.container}>
                 <CameraView ref={cameraRef} style={styles.camera} facing="front">
                     <View className='absolute top-3 left-2'>
-                        <TouchableOpacity onPress={() => console.log('miau')}>
+                        <TouchableOpacity onPress={() => router.replace('/profile')}>
                             <Ionicons name="chevron-back" size={35} color="white" />
                         </TouchableOpacity>
                     </View>
@@ -50,12 +74,12 @@ export default function App() {
     return (
         <View>
             <Image
-                source={{ uri: photoUri }} 
+                source={{ uri: photo?.uri }} 
                 className='w-full h-full'
                 alt="Taken Picture"
             />
             <View className='absolute bottom-10 left-1/4'>
-                <TouchableOpacity style={styles.button} onPress={() => takePhoto()}>
+                <TouchableOpacity style={styles.button} onPress={() => uploadPhoto()}>
                     <AntDesign name="check" size={50} color="white" />
                 </TouchableOpacity>
             </View>

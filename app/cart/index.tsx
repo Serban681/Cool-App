@@ -1,10 +1,3 @@
-// import { BigBtn } from "@/components/styled-components/Buttons";
-// import CartEntryComponent from "@/components/styled-components/CartEntryComponent"
-// import { SectionTitle } from "@/components/styled-components/SectionTitle"
-// import { ShopContext } from "@/context/ShopContext";
-// import { useRouter } from "next/navigation";
-// import { useContext } from "react";
-
 import { BigBtn } from "@/components/Buttons";
 import CartEntryComponent from "@/components/CartEntryComponent";
 import Header from "@/components/Header";

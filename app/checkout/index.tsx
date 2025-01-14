@@ -1,4 +1,4 @@
-import { BigBtn, SmallBtn } from "@/components/Buttons";
+import { BigBtn } from "@/components/Buttons";
 import { CustomDropdown } from "@/components/CustomDropdown";
 import { CustomTextInput } from "@/components/CustomTextInput";
 import Header from "@/components/Header";

@@ -30,7 +30,7 @@ export default function ProfileBox() {
             </View>
             <View className="ml-4 mt-4">
                 <View className="flex flex-row">
-                    <Avatar />
+                    <Avatar user={user} />
                     <View className="ml-3">
                         <Text className="font-jo-md">{user.firstName} {user.lastName}</Text>
                         <Text className="text-xs font-jo-li">{user.email}</Text>
